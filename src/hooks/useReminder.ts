@@ -7,11 +7,11 @@ import {
   showReminderNotification,
   type NotificationPermissionState,
 } from '../notifications'
-import { loadSettings, saveSettings } from '../storage'
-import type { IntervalMinutes, Settings } from '../types'
+import { saveCloudSettings, subscribeSettings } from '../firebase/sync'
+import { DEFAULT_SETTINGS, type IntervalMinutes, type Settings } from '../types'
 
-export function useReminder(incompleteCount: number, incompleteTitles: string[]) {
-  const [settings, setSettings] = useState<Settings>(() => loadSettings())
+export function useReminder(uid: string, incompleteCount: number, incompleteTitles: string[]) {
+  const [settings, setSettings] = useState<Settings>({ ...DEFAULT_SETTINGS })
   const [lastRemindedAt, setLastRemindedAt] = useState<number | null>(null)
   const [notificationPermission, setNotificationPermission] = useState<NotificationPermissionState>(
     () => getNotificationPermission(),
@@ -21,6 +21,7 @@ export function useReminder(incompleteCount: number, incompleteTitles: string[])
   const incompleteRef = useRef({ count: incompleteCount, titles: incompleteTitles })
   const settingsRef = useRef(settings)
   const toastTimerRef = useRef<number | null>(null)
+  const skipNextSave = useRef(true)
 
   useEffect(() => {
     incompleteRef.current = { count: incompleteCount, titles: incompleteTitles }
@@ -28,13 +29,38 @@ export function useReminder(incompleteCount: number, incompleteTitles: string[])
 
   useEffect(() => {
     settingsRef.current = settings
-    saveSettings(settings)
   }, [settings])
+
+  useEffect(() => {
+    skipNextSave.current = true
+    const unsub = subscribeSettings(
+      uid,
+      (next) => {
+        skipNextSave.current = true
+        setSettings(next)
+      },
+      () => {
+        // Keep defaults if settings doc missing/errors.
+      },
+    )
+    return unsub
+  }, [uid])
+
+  useEffect(() => {
+    if (skipNextSave.current) {
+      skipNextSave.current = false
+      return
+    }
+    void saveCloudSettings(uid, settings).catch(() => {
+      // best-effort cloud save
+    })
+  }, [uid, settings])
 
   useEffect(() => {
     const permission = getNotificationPermission()
     setNotificationPermission(permission)
     if (settings.notificationsEnabled && permission !== 'granted') {
+      skipNextSave.current = false
       setSettings((prev) => ({ ...prev, notificationsEnabled: false }))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -66,10 +92,8 @@ export function useReminder(incompleteCount: number, incompleteTitles: string[])
 
       setLastRemindedAt(Date.now())
       const message = buildBody(titles)
-      // Always show an in-app banner — OS banners are often suppressed while the tab is focused.
       setBannerMessage(message)
 
-      // Prefer notification before sound so a long audio path cannot delay the alert.
       if (notificationsEnabled) {
         const shown = await showReminderNotification(titles)
         if (!shown) {
@@ -81,7 +105,7 @@ export function useReminder(incompleteCount: number, incompleteTitles: string[])
         try {
           await playReminderBeep()
         } catch {
-          // Autoplay may still be blocked until a gesture; ignore.
+          // ignore
         }
       }
     },
@@ -126,7 +150,7 @@ export function useReminder(incompleteCount: number, incompleteTitles: string[])
       try {
         await unlockAudio()
       } catch {
-        // Audio unlock is best-effort.
+        // best-effort
       }
 
       if (patch.notificationsEnabled === false) {

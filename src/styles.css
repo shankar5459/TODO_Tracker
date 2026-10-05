@@ -98,6 +98,105 @@ input {
   gap: 1rem;
 }
 
+.header-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.55rem;
+}
+
+.user-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.35rem 0.15rem;
+  color: rgba(243, 247, 244, 0.8);
+  font-size: 0.9rem;
+}
+
+.user-email {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.user-bar .btn-ghost {
+  color: rgba(243, 247, 244, 0.85);
+}
+
+.user-bar .btn-ghost:hover {
+  color: #fff;
+  background: rgba(243, 247, 244, 0.12);
+}
+
+.sync-chip {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.28rem 0.55rem;
+  border-radius: 999px;
+  background: rgba(243, 247, 244, 0.14);
+  color: rgba(243, 247, 244, 0.9);
+}
+
+.sync-chip.sync-synced {
+  background: rgba(47, 107, 79, 0.35);
+}
+
+.sync-chip.sync-syncing {
+  background: rgba(180, 140, 40, 0.35);
+}
+
+.sync-chip.sync-offline,
+.sync-chip.sync-error {
+  background: rgba(176, 58, 42, 0.35);
+}
+
+.auth-panel {
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.75rem 1.35rem;
+  display: grid;
+  gap: 0.85rem;
+  color: var(--ink);
+}
+
+.auth-panel .brand {
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+.auth-panel h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.7rem, 4vw, 2.2rem);
+  line-height: 1.15;
+}
+
+.auth-copy {
+  margin: 0;
+  color: var(--ink-soft);
+  line-height: 1.45;
+}
+
+.auth-google-btn {
+  justify-self: start;
+  min-width: 12rem;
+}
+
+.auth-error {
+  margin: 0;
+  color: #9a3326;
+  background: rgba(176, 58, 42, 0.1);
+  border-radius: 10px;
+  padding: 0.65rem 0.75rem;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
 .view-tabs {
   display: inline-flex;
   gap: 0.35rem;
