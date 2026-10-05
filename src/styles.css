@@ -91,6 +91,50 @@ input {
 .app-header {
   color: #f3f7f4;
   padding: 0.25rem 0.15rem 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.view-tabs {
+  display: inline-flex;
+  gap: 0.35rem;
+  background: rgba(243, 247, 244, 0.12);
+  padding: 0.25rem;
+  border-radius: 999px;
+}
+
+.view-tab {
+  border: none;
+  background: transparent;
+  color: rgba(243, 247, 244, 0.75);
+  font-weight: 600;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.view-tab.is-active {
+  background: rgba(243, 247, 244, 0.95);
+  color: var(--ink);
+}
+
+.view-count {
+  font-size: 0.75rem;
+  font-weight: 700;
+  background: rgba(15, 118, 110, 0.15);
+  color: var(--accent);
+  padding: 0.1rem 0.4rem;
+  border-radius: 999px;
+}
+
+.view-tab.is-active .view-count {
+  background: rgba(15, 118, 110, 0.18);
 }
 
 .brand {
@@ -111,9 +155,51 @@ input {
   line-height: 1.15;
 }
 
+.day-subtitle {
+  margin: 0.35rem 0 0;
+  font-size: 0.95rem;
+  color: rgba(243, 247, 244, 0.7);
+}
+
+.reminder-banner {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.85rem;
+  padding: 0.9rem 1rem;
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, #1d4e45, #0f766e);
+  color: #f3f7f4;
+  box-shadow: var(--shadow);
+}
+
+.reminder-banner strong {
+  display: block;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+}
+
+.reminder-banner p {
+  margin: 0;
+  line-height: 1.4;
+}
+
+.reminder-banner .btn-secondary {
+  background: rgba(243, 247, 244, 0.14);
+  color: #f3f7f4;
+  flex-shrink: 0;
+}
+
+.reminder-banner .btn-secondary:hover {
+  background: rgba(243, 247, 244, 0.22);
+}
+
 .todo-form,
 .todo-list-panel,
-.reminder-panel {
+.reminder-panel,
+.history-panel {
   background: var(--surface);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
@@ -121,8 +207,49 @@ input {
 
 .todo-form {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.65rem;
   padding: 0.85rem;
+  align-items: center;
+}
+
+.todo-input {
+  flex: 1 1 12rem;
+}
+
+.priority-select,
+.priority-badge {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.65rem 0.7rem;
+  background: #fff;
+  color: var(--ink);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.priority-badge {
+  padding: 0.2rem 0.45rem;
+  font-size: 0.75rem;
+  border-radius: 999px;
+}
+
+.priority-high {
+  border-color: rgba(176, 58, 42, 0.35);
+  color: #9a3326;
+  background: rgba(176, 58, 42, 0.08);
+}
+
+.priority-medium {
+  border-color: rgba(160, 120, 30, 0.35);
+  color: #8a6a14;
+  background: rgba(180, 140, 40, 0.1);
+}
+
+.priority-low {
+  border-color: rgba(47, 107, 79, 0.3);
+  color: var(--ok);
+  background: rgba(47, 107, 79, 0.08);
 }
 
 .todo-input,
@@ -238,10 +365,42 @@ input {
 .todo-item {
   display: grid;
   grid-template-columns: auto 1fr auto;
-  align-items: center;
+  align-items: start;
   gap: 0.65rem;
   padding: 0.65rem 0.25rem;
   border-top: 1px solid var(--line);
+}
+
+.todo-main {
+  min-width: 0;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.todo-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.carried-badge {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #8a6a14;
+  background: rgba(180, 140, 40, 0.14);
+  border-radius: 999px;
+  padding: 0.18rem 0.5rem;
+}
+
+.rollover-note {
+  margin: 0 0 0.65rem;
+  padding: 0.55rem 0.7rem;
+  border-radius: 10px;
+  background: rgba(180, 140, 40, 0.12);
+  color: #6e5614;
+  font-size: 0.88rem;
+  line-height: 1.35;
 }
 
 .todo-check {
@@ -380,6 +539,47 @@ input {
   accent-color: var(--ok);
 }
 
+.toggle-block {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.permission-hint {
+  margin: 0;
+  padding-left: 1.7rem;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  color: var(--ink-soft);
+}
+
+.reminder-toast {
+  margin-top: 0.9rem;
+  padding: 0.75rem 0.85rem;
+  border-radius: 12px;
+  background: #14352f;
+  color: #f3f7f4;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.reminder-toast p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.reminder-toast .btn-ghost {
+  color: rgba(243, 247, 244, 0.85);
+  flex-shrink: 0;
+}
+
+.reminder-toast .btn-ghost:hover {
+  color: #fff;
+  background: rgba(243, 247, 244, 0.12);
+}
+
 .interval-row {
   display: flex;
   flex-wrap: wrap;
@@ -432,13 +632,219 @@ input {
   color: var(--ink-soft);
 }
 
+.history-panel {
+  padding: 1.1rem 1.15rem 1.25rem;
+}
+
+.history-header h2 {
+  margin: 0 0 0.35rem;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 600;
+}
+
+.history-copy {
+  margin: 0 0 1rem;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.history-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  align-items: end;
+  margin-bottom: 0.75rem;
+}
+
+.history-search {
+  flex: 1 1 12rem;
+}
+
+.history-search input,
+.history-date input {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.65rem 0.8rem;
+  background: #fff;
+  color: var(--ink);
+}
+
+.history-date {
+  display: grid;
+  gap: 0.25rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+.history-day-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.85rem;
+}
+
+.day-chip {
+  border: 1px solid var(--line);
+  background: var(--surface-muted);
+  color: var(--ink-soft);
+  border-radius: 999px;
+  padding: 0.35rem 0.7rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.day-chip.is-active,
+.day-chip:hover {
+  background: #fff;
+  color: var(--ink);
+  border-color: rgba(15, 118, 110, 0.35);
+}
+
+.history-selected-day {
+  margin: 0 0 0.75rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+}
+
+.history-day-link {
+  border: none;
+  background: transparent;
+  padding: 0;
+  font: inherit;
+  font-weight: 700;
+  color: inherit;
+  cursor: pointer;
+}
+
+.history-day-link:hover {
+  color: var(--accent);
+}
+
+.history-ranges {
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.history-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.55rem;
+  margin-bottom: 1rem;
+}
+
+.stat-card {
+  background: var(--surface-muted);
+  border-radius: 12px;
+  padding: 0.7rem 0.55rem;
+  display: grid;
+  gap: 0.15rem;
+  justify-items: center;
+  text-align: center;
+}
+
+.stat-value {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.history-groups {
+  display: grid;
+  gap: 1rem;
+}
+
+.history-day h3 {
+  margin: 0 0 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--ink-soft);
+  letter-spacing: 0.02em;
+}
+
+.history-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.history-item {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 0.65rem;
+  align-items: start;
+  padding: 0.65rem 0;
+  border-top: 1px solid var(--line);
+}
+
+.priority-dot {
+  width: 0.65rem;
+  height: 0.65rem;
+  border-radius: 50%;
+  margin-top: 0.4rem;
+  background: var(--ink-soft);
+}
+
+.priority-dot.priority-high {
+  background: #b03a2a;
+}
+
+.priority-dot.priority-medium {
+  background: #b48c28;
+}
+
+.priority-dot.priority-low {
+  background: var(--ok);
+}
+
+.history-item-text {
+  margin: 0;
+  font-weight: 500;
+  line-height: 1.35;
+  word-break: break-word;
+}
+
+.history-item-meta {
+  margin: 0.2rem 0 0;
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+}
+
 @media (max-width: 520px) {
   .app-shell {
     padding: 1.25rem 0.85rem 2rem;
   }
 
+  .app-header {
+    align-items: stretch;
+  }
+
+  .view-tabs {
+    width: 100%;
+  }
+
+  .view-tab {
+    flex: 1;
+    justify-content: center;
+  }
+
   .todo-form {
     flex-direction: column;
+    align-items: stretch;
   }
 
   .list-toolbar {
@@ -461,5 +867,9 @@ input {
   .reminder-footer {
     flex-direction: column;
     align-items: stretch;
+  }
+
+  .history-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
