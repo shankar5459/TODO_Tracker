@@ -1,6 +1,8 @@
-# Todo Tracker
+# TODO Tracker
 
 A local web app for everyday to-dos, priorities, and long-term completion history. Data stays in your browser’s `localStorage` on this device.
+
+Tracks your daily list of tasks with reminder settings, notifications, and history.
 
 ## Run locally
 
